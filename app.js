@@ -70,7 +70,7 @@ document.getElementById("surveyForm").addEventListener("submit", async (e) => {
 
     await db.collection("encuestas_ayudemos").add(data);
 
-    alert("La Secretaria de Igualdad e Inclusión , agradece mucho el espacio para contestar la encuesta, gracias");
+    alert("La Secretaría de Igualdad e Inclusión , agradece mucho el espacio para contestar la encuesta, gracias");
 
     document.getElementById("surveyForm").reset();
 
