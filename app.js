@@ -20,9 +20,9 @@ const preguntas = [
  "Fue fácil acceder al programa",
  "Recibió la atención clara y amable",
  "El apoyo llegó a tiempo",
- "Está satisfecho con el programa",
- "Cómo valora a nuestro actual Secretario Félix Arratia de Igauldad e Inclusión",
- "Qué calificación le otorga al Gobierno del Estado de Neuvo León"
+ "Está contenta con el programa",
+ "Cómo valora a nuestro actual Secretario Félix Arratia de Igualdad e Inclusión",
+ "Qué calificación le otorga a nuestro actual Gobernador Samuel Garcìa"
 ];
 
 // 🎯 GENERAR PREGUNTAS
