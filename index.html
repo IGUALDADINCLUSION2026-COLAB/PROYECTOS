@@ -1,211 +1,145 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Encuesta Ayudemos</title>
 
-<!-- 🔥 FIREBASE -->
+<title>Encuesta de Satisfacción</title>
+
+<link rel="stylesheet" href="styles.css">
+
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-<style>
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #ff7a00, #ffb347);
-  margin: 0;
-}
-
-.container {
-  max-width: 800px;
-  margin: 40px auto;
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-
-h1 {
-  text-align: center;
-  color: #ff7a00;
-}
-
-.subtitle {
-  text-align: center;
-  margin-bottom: 25px;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-input, textarea, select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  margin-top: 5px;
-}
-
-.question {
-  margin-bottom: 25px;
-}
-
-.options {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.options input[type="radio"] {
-  display: none;
-}
-
-.options span {
-  padding: 10px 14px;
-  border-radius: 50px;
-  border: 2px solid #ff7a00;
-  color: #ff7a00;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.options input[type="radio"]:checked + span {
-  background: #ff7a00;
-  color: white;
-}
-
-button {
-  width: 100%;
-  padding: 15px;
-  border: none;
-  border-radius: 10px;
-  background: #ff7a00;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #e56b00;
-}
-
-.success {
-  text-align: center;
-  color: green;
-  display: none;
-  margin-top: 15px;
-}
-</style>
 </head>
 
 <body>
 
 <div class="container">
-  <h1>Encuesta de Satisfacción</h1>
-	<h1>Programas Ayudemos</h1>
 
-  <!-- 🔥 FORM PRINCIPAL -->
-  <form id="surveyForm">
-
-    <!-- DATOS GENERALES -->
-    <div class="form-group">
-      <label>Nombre completo</label>
-      <input id="nombre" type="text" required
-        pattern="[A-Za-zÁÉÍÓÚÑ ]+"
-        oninput="this.value = this.value.toUpperCase()">
+    <div class="header">
+        <h1>Encuesta de Satisfacción</h1>
+        <h2>Programas Ayudemos</h2>
     </div>
 
-    <div class="form-group">
-      <label>Municipio</label>
-      <select id="municipio" required>
-        <option value="">Seleccione</option>
-        <option>ABASOLO</option>
-        <option>AGUALEGUAS</option>
-        <option>ALLENDE</option>
-        <option>ANÁHUAC</option>
-        <option>APODACA</option>
-        <option>ARAMBERRI</option>
-        <option>BUSTAMANTE</option>
-        <option>CADEREYTA JIMÉNEZ</option>
- 	<option>CERRALVO</option>
-        <option>CHINA</option>
-        <option>CIÉNEGA DE FLORES</option>
-        <option>DOCTOR ARROYO</option>
-        <option>DOCTOR COSS</option>
-        <option>DOCTOR GONZÁLEZ</option>
-        <option>EL CARMEN</option>
-        <option>GALEANA</option>
- 	<option>GARCÍA</option>
-        <option>GENERAL BRAVO</option>
-        <option>GENERAL ESCOBEDO</option>
-        <option>GENERAL TERÁN</option>
-        <option>GENERAL TREVIÑO</option>
-        <option>GENERAL ZARAGOZA</option>
-        <option>GENERAL ZUAZUA</option>
-        <option>GUADALUPE</option>
- 	<option>HIDALGO</option>
-        <option>HIGUERAS</option>
-        <option>HUALAHUISES</option>
-        <option>ITURBIDE</option>
-        <option>JUÁREZ</option>
-        <option>LAMPAZOS DE NARANJO</option>
-        <option>LINARES</option>
-        <option>LOS ALDAMAS</option>
- 	<option>LOS HERRERAS</option>
-        <option>LOS RAMONES</option>
-        <option>MARÍN</option>
-        <option>MELCHOR OCAMPO</option>
-        <option>MIER Y NORIEGA</option>
-        <option>MINA</option>
-        <option>MONTEMORELOS</option>
-        <option>MONTERREY</option>
-	option>PARÁS</option>
-        <option>PESQUERÍA</option>
- 	<option>RAYONES</option>
-        <option>SABINAS HIDALGO</option>
-        <option>SALINAS VICTORIA</option>
-        <option>SAN NICOLÁS DE LOS GARZA</option>
-        <option>SAN PEDRO GARZA GARCÍA</option>
-        <option>SANTA CATARINA</option>
-        <option>SANTIAGO</option>
-        <option>VALLECILLO</option>
-	<option>VILLALDAMA</option>
-      </select>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <div class="form-group">
-      <label>Fecha</label>
-      <input type="date" id="fecha" required>
-    </div>
+    <form id="surveyForm">
 
-    <div class="form-group">
-      <label>No. de empleado</label>
-      <input id="empleado" type="text" required
-        oninput="this.value = this.value.toUpperCase()">
-    </div>
+        <div class="card">
 
-    <h3>Selecciona de 1 a 5 (donde 5 es la mejor calificación)</h3>
+            <div class="form-group">
+                <label>Nombre completo</label>
+                <input
+                    id="nombre"
+                    type="text"
+                    required
+                    pattern="[A-Za-zÁÉÍÓÚÑ ]+"
+                    oninput="this.value = this.value.toUpperCase()">
+            </div>
 
-    <!-- 🔥 PREGUNTAS DINÁMICAS -->
-    <div id="questions"></div>
+            <div class="form-group">
+                <label>Municipio</label>
+                <select id="municipio" required>
 
-    <!-- COMENTARIOS -->
-    <div class="form-group">
-      <label>¿Qué mejorarías del programa?</label>
-      <textarea id="comentario"></textarea>
-    </div>
+                    <option value="">Seleccione</option>
 
-    <button type="submit">Enviar</button>
+                    <option>ABASOLO</option>
+                    <option>AGUALEGUAS</option>
+                    <option>ALLENDE</option>
+                    <option>ANÁHUAC</option>
+                    <option>APODACA</option>
+                    <option>ARAMBERRI</option>
+                    <option>BUSTAMANTE</option>
+                    <option>CADEREYTA JIMÉNEZ</option>
+                    <option>CERRALVO</option>
+                    <option>CHINA</option>
+                    <option>CIÉNEGA DE FLORES</option>
+                    <option>DOCTOR ARROYO</option>
+                    <option>DOCTOR COSS</option>
+                    <option>DOCTOR GONZÁLEZ</option>
+                    <option>EL CARMEN</option>
+                    <option>GALEANA</option>
+                    <option>GARCÍA</option>
+                    <option>GENERAL BRAVO</option>
+                    <option>GENERAL ESCOBEDO</option>
+                    <option>GENERAL TERÁN</option>
+                    <option>GENERAL TREVIÑO</option>
+                    <option>GENERAL ZARAGOZA</option>
+                    <option>GENERAL ZUAZUA</option>
+                    <option>GUADALUPE</option>
+                    <option>HIDALGO</option>
+                    <option>HIGUERAS</option>
+                    <option>HUALAHUISES</option>
+                    <option>ITURBIDE</option>
+                    <option>JUÁREZ</option>
+                    <option>LAMPAZOS DE NARANJO</option>
+                    <option>LINARES</option>
+                    <option>LOS ALDAMAS</option>
+                    <option>LOS HERRERAS</option>
+                    <option>LOS RAMONES</option>
+                    <option>MARÍN</option>
+                    <option>MELCHOR OCAMPO</option>
+                    <option>MIER Y NORIEGA</option>
+                    <option>MINA</option>
+                    <option>MONTEMORELOS</option>
+                    <option>MONTERREY</option>
+                    <option>PARÁS</option>
+                    <option>PESQUERÍA</option>
+                    <option>RAYONES</option>
+                    <option>SABINAS HIDALGO</option>
+                    <option>SALINAS VICTORIA</option>
+                    <option>SAN NICOLÁS DE LOS GARZA</option>
+                    <option>SAN PEDRO GARZA GARCÍA</option>
+                    <option>SANTA CATARINA</option>
+                    <option>SANTIAGO</option>
+                    <option>VALLECILLO</option>
+                    <option>VILLALDAMA</option>
 
-    <p id="successMsg" class="success">La Secretaría de Igualdad e Inclusión , agradece mucho el espacio para contestar la encuesta, gracias ✅</p>
+                </select>
+            </div>
 
-  </form>
+            <div class="form-group">
+                <label>Fecha</label>
+                <input type="date" id="fecha" required>
+            </div>
+
+            <div class="form-group">
+                <label>No. Empleado</label>
+                <input
+                    id="empleado"
+                    type="text"
+                    required
+                    oninput="this.value=this.value.toUpperCase()">
+            </div>
+
+        </div>
+
+        <div id="questions"></div>
+
+        <div class="card">
+
+            <label>¿Qué mejorarías del programa?</label>
+
+       <textarea id="comentario" placeholder="Escribe aquí tus comentarios..."></textarea>
+
+        </div>
+
+        <button type="submit">
+            🚀 Enviar Encuesta
+        </button>
+
+        <p id="successMsg" class="success">
+            Gracias por responder la encuesta ❤️
+        </p>
+
+    </form>
+
 </div>
 
-<!-- TU JS -->
 <script src="app.js"></script>
 
 <script>

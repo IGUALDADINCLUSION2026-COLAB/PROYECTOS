@@ -1,86 +1,201 @@
-// 🔥 CONFIG FIREBASE (YA ES TUYA)
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBqwwF4B9kfGqRozy3otl8MNlDysHlPa_o",
-  authDomain: "encuesta-salida.firebaseapp.com",
-  projectId: "encuesta-salida",
-  storageBucket: "encuesta-salida.firebasestorage.app",
-  messagingSenderId: "178347957730",
-  appId: "1:178347957730:web:f69e96507528fd12802dbb",
+  apiKey: "AIzaSyBi3bPyZ-060mXmRy5-9nYu9NL2AOQV3pU",
+  authDomain: "encuestas-46af1.firebaseapp.com",
+  projectId: "encuestas-46af1",
+  storageBucket: "encuestas-46af1.firebasestorage.app",
+  messagingSenderId: "944030376540",
+  appId: "1:944030376540:web:acc23c8789e943ae6fbc99",
+  measurementId: "G-B9QWR2XL9D"
 };
 
 firebase.initializeApp(firebaseConfig);
+
 const db = firebase.firestore();
 
-// 📋 PREGUNTAS
 const preguntas = [
- "El programa ha mejorado su calidad de vida",
- "El apoyo recibido ha sido útil",
- "Su situación ha mejorado",
- "Ha beneficiado a su familia",
- "Fue fácil acceder al programa",
- "Recibió la atención clara y amable",
- "El apoyo llegó a tiempo",
- "Está contenta con el programa",
- "Cómo valora a nuestro actual Secretario Félix Arratia de Igualdad e Inclusión",
- "Qué calificación le otorga a nuestro actual Gobernador Samuel Garcìa"
+"El programa ha mejorado su calidad de vida",
+"El apoyo recibido ha sido útil",
+"Su situación ha mejorado",
+"Ha beneficiado a su familia",
+"Fue fácil acceder al programa",
+"Recibió atención clara y amable",
+"El apoyo llegó a tiempo",
+"Está contenta con el programa",
+"¿Cómo valora a nuestro actual Secretario Félix Arratia de Igualdad e Inclusión?",
+"¿Qué calificación le otorga al Gobernador Samuel García?"
 ];
 
-// 🎯 GENERAR PREGUNTAS
-const contenedor = document.getElementById("questions");
+const emojis = [
+{
+valor:1,
+emoji:"😭",
+texto:"Muy Insatisfecho"
+},
+{
+valor:2,
+emoji:"😕",
+texto:"Insatisfecho"
+},
+{
+valor:3,
+emoji:"😐",
+texto:"Neutral"
+},
+{
+valor:4,
+emoji:"😊",
+texto:"Satisfecho"
+},
+{
+valor:5,
+emoji:"🥰",
+texto:"Muy Satisfecho"
+}
+];
 
-preguntas.forEach((texto, i) => {
-  const div = document.createElement("div");
-  div.classList.add("question");
+const contenedor =
+document.getElementById("questions");
 
-  div.innerHTML = `
-    <label>${i+1}. ${texto}</label>
-    <div class="options">
-      ${[1,2,3,4,5].map(v => `
-        <label>
-          <input type="radio" name="q${i}" value="${v}" required>
-          <span>${v}</span>
-        </label>
-      `).join("")}
-    </div>
-  `;
+preguntas.forEach((texto,i)=>{
 
-  contenedor.appendChild(div);
+const div =
+document.createElement("div");
+
+div.classList.add("question");
+
+div.innerHTML = `
+
+<div class="question-title">
+${i+1}. ${texto}
+</div>
+
+<div class="options">
+
+${emojis.map(e=>`
+
+<label>
+
+<input
+type="radio"
+name="q${i}"
+value="${e.valor}"
+required>
+
+<div class="rating">
+
+<span class="emoji">
+${e.emoji}
+</span>
+
+<span class="text">
+${e.texto}
+</span>
+
+</div>
+
+</label>
+
+`).join("")}
+
+</div>
+`;
+
+contenedor.appendChild(div);
+
 });
 
-// 🚀 GUARDAR
-document.getElementById("surveyForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+document.addEventListener("change",()=>{
 
-  const data = {
-    nombre: document.getElementById("nombre").value,
-    municipio: document.getElementById("municipio").value,
-    fecha: document.getElementById("fecha").value,
-    empleado: document.getElementById("empleado").value,
-    comentario: document.getElementById("comentario").value,
-    createdAt: new Date(),
-    respuestas: {}
-  };
+const contestadas =
+document.querySelectorAll(
+'input[type="radio"]:checked'
+).length;
 
-  preguntas.forEach((_, i) => {
-    const val = document.querySelector(`input[name="q${i}"]:checked`).value;
-    data.respuestas[`p${i+1}`] = parseInt(val);
-  });
+const porcentaje =
+(contestadas/preguntas.length)*100;
 
-  try {
+document.getElementById("progressBar")
+.style.width = porcentaje+"%";
 
-    await db.collection("encuestas_ayudemos").add(data);
+});
 
-    alert("La Secretaría de Igualdad e Inclusión , agradece mucho el espacio para contestar la encuesta, gracias");
+document
+.getElementById("surveyForm")
+.addEventListener("submit",async(e)=>{
 
-    document.getElementById("surveyForm").reset();
+e.preventDefault();
 
-    document.getElementById("fecha").valueAsDate = new Date();
+const data = {
 
-  } catch (error) {
+nombre:
+document.getElementById("nombre").value,
 
-    console.error(error);
+municipio:
+document.getElementById("municipio").value,
 
-    alert("Error al guardar");
+fecha:
+document.getElementById("fecha").value,
 
-  }
+empleado:
+document.getElementById("empleado").value,
+
+comentario:
+document.getElementById("comentario").value,
+
+createdAt:new Date(),
+
+respuestas:{}
+
+};
+
+preguntas.forEach((_,i)=>{
+
+const valor =
+document.querySelector(
+`input[name="q${i}"]:checked`
+).value;
+
+data.respuestas[`p${i+1}`] =
+parseInt(valor);
+
+});
+
+try{
+
+await db
+.collection("encuestas_ayudemos")
+.add(data);
+
+alert("✅ Encuesta guardada correctamente");
+
+document
+.getElementById("successMsg")
+.style.display="block";
+
+document
+.getElementById("surveyForm")
+.reset();
+
+document
+.getElementById("fecha")
+.valueAsDate = new Date();
+
+document
+.getElementById("progressBar")
+.style.width="0%";
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}catch(error){
+
+console.error(error);
+
+alert("Error al guardar la encuesta");
+
+}
+
 });
