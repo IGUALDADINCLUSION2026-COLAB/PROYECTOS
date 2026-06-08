@@ -1,4 +1,3 @@
-
 const firebaseConfig = {
   apiKey: "AIzaSyBi3bPyZ-060mXmRy5-9nYu9NL2AOQV3pU",
   authDomain: "encuestas-46af1.firebaseapp.com",
