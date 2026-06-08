@@ -26,21 +26,13 @@ const preguntas = [
 "¿Qué calificación le otorga al Gobernador Samuel García?"
 ];
 
+
+
 const emojis = [
 {
-valor:1,
-emoji:"😭",
-texto:"Muy Insatisfecho"
-},
-{
-valor:2,
-emoji:"😕",
-texto:"Insatisfecho"
-},
-{
-valor:3,
-emoji:"😐",
-texto:"Neutral"
+valor:5,
+emoji:"🥰",
+texto:"Muy Satisfecho"
 },
 {
 valor:4,
@@ -48,9 +40,19 @@ emoji:"😊",
 texto:"Satisfecho"
 },
 {
-valor:5,
-emoji:"🥰",
-texto:"Muy Satisfecho"
+valor:3,
+emoji:"😐",
+texto:"Neutral"
+},
+{
+valor:2,
+emoji:"😕",
+texto:"Insatisfecho"
+},
+{
+valor:1,
+emoji:"😭",
+texto:"Muy Insatisfecho"
 }
 ];
 
